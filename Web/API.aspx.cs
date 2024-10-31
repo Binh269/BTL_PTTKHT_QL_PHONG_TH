@@ -50,6 +50,9 @@ namespace Web
                 case "login":
                     login();
                     break;
+                case "change_tt":
+                    change_tt();
+                    break;
                 case "generate_captcha":
                     GenerateCaptcha();
                     break;
@@ -75,6 +78,21 @@ namespace Web
 
             lib_db.DB db = get_db();
             string json = db.add_tb(matb, maphong, tentb,tttbi);
+            this.Response.Write(json);
+        }
+
+        void change_tt()
+        {
+            string uid = Request.Form["uid"];
+            string passLogIn = Request.Form["passLogIn"];
+            string passnew = Request.Form["passnew"];
+            string name = Request.Form["name"];
+            string maso = Request.Form["maso"];
+            string gmail = Request.Form["gmail"];
+            string dienthoai = Request.Form["dienthoai"];
+            string diachi = Request.Form["diachi"];
+            lib_db.baomat db = get_db_bm();
+            string json = db.change_tt(uid, passLogIn, passnew, name, maso, gmail, dienthoai, diachi);
             this.Response.Write(json);
         }
 
@@ -209,50 +227,13 @@ namespace Web
             Response.BinaryWrite(imageBytes);
             Response.End();
         }
-        //void login()
-        //{
-        //    string uid = this.Request["uid"];
-        //    string pass = this.Request["passLogIn"];
-        //    string salt = this.Request["salt"];
-        //    Boolean IsLoggedIn = false;
-        //    if (loginAttempts >= 3)
-        //    {
-        //        string captchaInput = this.Request["captcha"];
-        //        string captchaSession = Session["Captcha"] as string;
-
-        //        if (captchaInput == null || !captchaInput.Equals(captchaSession, StringComparison.OrdinalIgnoreCase))
-        //        {
-        //            this.Response.Write("{\"ok\":0, \"msg\":\"CAPTCHA không đúng.\"}");
-        //            return;
-        //        }
-        //    }
-
-        //    lib_db.baomat db = get_db_bm();
-        //    string json = db.login(uid, pass, salt);
-        //    this.Response.Write(json);
-
-        //    if (json.Contains("\"ok\":0"))
-        //    {
-        //        loginAttempts++;
-        //    }
-        //    else
-        //    {
-        //        IsLoggedIn = true;
-        //        Session["IsLoggedIn"] = IsLoggedIn;
-        //        Session["username"] = uid;
-        //        loginAttempts = 0;
-        //        Session.Remove("Captcha");
-        //        var userInfo = JsonConvert.DeserializeObject<dynamic>(json);
-        //        int level = userInfo.level;
-        //        Session["level"] = level;
-
-        //    }
-        //}
+     
         void login()
         {
             string uid = this.Request["uid"];
             string pass = this.Request["passLogIn"];
             string salt = this.Request["salt"];
+
             if (loginAttempts >= 3)
             {
                 string captchaInput = this.Request["captcha"];
@@ -282,10 +263,16 @@ namespace Web
                 Session.Remove("Captcha");
 
                 var userInfo = JObject.Parse(json);
-                int level = (int)userInfo["level"];
-                Session["level"] = level;
+                Session["name"] = userInfo["name"].ToString();
+                Session["maso"] = userInfo["maso"].ToString();
+                Session["level"] = (int)userInfo["level"];
+                Session["gmail"] = userInfo["gmail"].ToString();
+                Session["dienthoai"] = userInfo["dienthoai"].ToString();
+                Session["diachi"] = userInfo["diachi"].ToString();
+                Session["lastLogin"] = userInfo["lastLogin"].ToString();
             }
         }
+
         void get_salt()
         {
             string uid = this.Request["uid"];
@@ -304,14 +291,22 @@ namespace Web
             if (Session["username"] != null)
             {
                 string username = Session["username"].ToString();
+                string name = Session["name"] != null ? Session["name"].ToString() : "Không có tên";
+                string maso = Session["maso"] != null ? Session["maso"].ToString() : "Không có mã số";
                 string level = Session["level"] != null ? Session["level"].ToString() : "Không có cấp độ";
-                this.Response.Write($"{{\"ok\":1, \"username\":\"{username}\", \"level\":\"{level}\"}}");
+                string gmail = Session["gmail"] != null ? Session["gmail"].ToString() : "Không có gmail";
+                string dienthoai = Session["dienthoai"] != null ? Session["dienthoai"].ToString() : "Không có điện thoại";
+                string diachi = Session["diachi"] != null ? Session["diachi"].ToString() : "Không có địa chỉ";
+                string lastLogin = Session["lastLogin"] != null ? Session["lastLogin"].ToString() : "Chưa có đăng nhập trước";
+
+                this.Response.Write($"{{\"ok\":1, \"username\":\"{username}\", \"name\":\"{name}\", \"maso\":\"{maso}\", \"level\":\"{level}\", \"gmail\":\"{gmail}\", \"dienthoai\":\"{dienthoai}\", \"diachi\":\"{diachi}\", \"lastLogin\":\"{lastLogin}\"}}");
             }
             else
             {
                 this.Response.Write("{\"ok\":0, \"msg\":\"Chưa đăng nhập\"}");
             }
         }
+
 
     }
 }

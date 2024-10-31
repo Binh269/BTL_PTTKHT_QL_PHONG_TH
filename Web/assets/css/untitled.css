@@ -2,3 +2,6 @@
   border-left: .25rem solid #e74a3b !important;
 }
 
+.hidden {
+    display: none !important;
+}

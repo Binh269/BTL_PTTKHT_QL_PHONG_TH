@@ -83,11 +83,43 @@ namespace lib_db
                         cmd.Parameters.Add("@action", SqlDbType.VarChar, 50).Value = "dangky";
                         cmd.Parameters.Add("@user", SqlDbType.VarChar, 50).Value = uid;
                         cmd.Parameters.Add("@pass", SqlDbType.VarChar, 50).Value = pwd;
-                        cmd.Parameters.Add("@name", SqlDbType.VarChar, 100).Value = name;
+                        cmd.Parameters.Add("@name", SqlDbType.NVarChar, 100).Value = name;
                         cmd.Parameters.Add("@maso", SqlDbType.VarChar, 50).Value = maso;
                         cmd.Parameters.Add("@gmail", SqlDbType.VarChar, 100).Value = gmail;
                         cmd.Parameters.Add("@dienthoai", SqlDbType.VarChar, 20).Value = dienthoai;
-                        cmd.Parameters.Add("@diachi", SqlDbType.VarChar, 200).Value = diachi;
+                        cmd.Parameters.Add("@diachi", SqlDbType.NVarChar).Value = diachi;
+                        object result = cmd.ExecuteScalar();
+                        json = (string)result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                json = "{\"ok\":0,\"msg\":\"Lỗi rồi: " + ex.Message + "\"}";
+            }
+            return json;
+        }
+        public string change_tt(string uid, string pwd, string passnew , string name, string maso, string gmail, string dienthoai, string diachi)
+        {
+            string json = "";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(cnstr))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = "SP_baomat";
+                        cmd.Parameters.Add("@action", SqlDbType.VarChar, 50).Value = "change_tt";
+                        cmd.Parameters.Add("@uid", SqlDbType.VarChar, 50).Value = uid;
+                        cmd.Parameters.Add("@passLogIn", SqlDbType.VarChar, 50).Value = pwd;
+                        cmd.Parameters.Add("@passnew", SqlDbType.VarChar, 50).Value = passnew;
+                        cmd.Parameters.Add("@name", SqlDbType.NVarChar, 100).Value = name;
+                        cmd.Parameters.Add("@maso", SqlDbType.VarChar, 50).Value = maso;
+                        cmd.Parameters.Add("@gmail", SqlDbType.VarChar, 100).Value = gmail;
+                        cmd.Parameters.Add("@dienthoai", SqlDbType.VarChar, 20).Value = dienthoai;
+                        cmd.Parameters.Add("@diachi", SqlDbType.NVarChar).Value = diachi;
                         object result = cmd.ExecuteScalar();
                         json = (string)result;
                     }

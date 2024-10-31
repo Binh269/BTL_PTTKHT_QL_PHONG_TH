@@ -208,7 +208,7 @@
                         $.post('API.aspx', { action: 'update_phong', maphong: maphong, tenphong: newTenphong, ttphong: newTtphong }, function (data) {
                             if (data.ok) {
                                 $.alert('Chỉnh Sửa Thành Công');
-                                phongDiv.find('.tt_phong h4').eq(1).text("Tên Phòng: " + newTenphong);
+                                phongDiv.find('.tt_phong h4').eq(1).text("Tên Phòng Học: " + newTenphong);
                                 phongDiv.find('.tt_phong h4').eq(2).text("Trạng Thái Phòng: " + statusPhong(newTtphong));
                             } else {
                                 $.alert('Chỉnh Sửa Thất Bại');
@@ -445,12 +445,12 @@
             if (data.ok == 1) {
                 salt_value = data.salt;
                 if (salt_value != '') {
-                    $(location).attr('href', 'index.html');
+                    $(location).attr('href', 'dangnhap.html');
                 } else {
                     alert("Tài khoản chưa được đăng ký!");
                 }
             } else {
-                alert("Đăng nhập thất bại");
+                alert("Đăng ký thất bại");
             }
         }, 'json');
     }
@@ -510,14 +510,92 @@
             }
         }, 'json');
     }
-    function checklogin() {
+    checklogin();
 
+    function displayUserInfo(data) {
+        $('#username').val(data.username);
+        $('#gmail').val(data.gmail);
+        $('#dienthoai').val(data.dienthoai);
+        $('#name').val(data.name);
+        $('#maso').val(data.maso);
+        $('#diachi').val(data.diachi);
+    }
+
+    $('#update_infor').click(function () {
+        var html =
+            `<form id="addDeviceForm">
+                         <div class="mb-3">
+                            <label for="passLogIn" class="form-label">Nhập lại mật khẩu</label>
+                            <input type="password" class="form-control" id="passLogIn" placeholder="Nhập mã phòng">
+                        </div>
+                    </form>`;
+
+        var confirmBox = $.confirm({
+            title: 'Sửa thông tin',
+            content: html,
+            boxWidth: '30%',
+            theme: 'material',
+            buttons: {
+                save: {
+                    text: 'Xác nhận',
+                    btnClass: 'btn-primary',
+                    action: function () {
+                        var passLogIn = $("#passLogIn").val().trim();
+
+                        var uid = $("#username").val().trim();
+                        var passnew = $("#password").val().trim();
+                        var gmail = $("#gmail").val().trim();
+                        var dienthoai = $("#dienthoai").val().trim();
+                        var name = $("#name").val().trim();
+                        var maso = $("#maso").val().trim();
+                        var diachi = $("#diachi").val().trim();
+                        if (!uid || !passnew || !gmail || !dienthoai || !name || !maso || !diachi) {
+                            $.alert('Vui lòng nhập đầy đủ thông tin!');
+                            return false;
+                        }
+
+                        $.post('API.aspx', {
+                            action: 'change_tt',
+                            uid: uid,
+                            passLogIn: CryptoJS.SHA256(passLogIn).toString(),
+                            passnew: CryptoJS.SHA256(passnew).toString(),
+                            name: name,
+                            maso: maso,
+                            gmail: gmail,
+                            dienthoai: dienthoai,
+                            diachi: diachi 
+                        }, function (data) {
+                            if (data.ok) {
+                                $.alert('Đã Sửa Thành Công ! Vui lòng đăng nhập lại !');
+                                confirmBox.close();
+                                $(location).attr('href', 'dangnhap.html');
+
+                            } else {
+                                $.alert('Mật khẩu sai rồi !');
+                            }
+                        }, 'json');
+                        return false;
+                    }
+                },
+                cancel: {
+                    text: 'Hủy',
+                    btnClass: 'btn-secondary',
+                }
+            }
+        });
+    
+    });
+
+    function checklogin() {
         $.post('API.aspx', { action: 'check_login'}, function (data) {
             if (data.ok === 1) {
-                loadTable();
-                control(data.level);
+                loadTable(function () {
+                    control(data.level); 
+                });
+                $('.nav-link .text-gray-600').text(data.name);
+                displayUserInfo(data); 
             } else {
-                alert("Chưa đăng nhập");
+                alert("Đăng nhập để vào web xem nhé");
             }
         }, 'json');
     }
@@ -565,16 +643,32 @@
 
     $("#refreshCaptcha").click(refreshCaptcha);
 
-    function control(level){
-        if (level === 1) {
-            $('.change, .button-add, .tb_nut').hide();
-        } else if (level === 2) {
-            $('.change #add-btn, .button-add').show();
-            $('.change #edit-btn, .change #delete-btn, .tb_nut #edit-btn, .tb_nut #delete-btn').hide();
-        } else if (level === 3) {
-            $('.change, .button-add, .tb_nut').show();
+    function control(level) {
+        level = parseInt(level);
+        console.log($('.change').length, $('.button-add').length, $('.tb_nut').length);
+        switch (level) {
+            case 1:
+                $('.change, .button-add, .tb_nut').hide();
+                $('.change #edit-btn, .change #delete-btn, .tb_nut #edit-btn, .tb_nut #delete-btn').hide();
+                break;
+            case 2:
+                $('.change #add-btn, .button-add').show();
+                $('.change #edit-btn, .change #delete-btn, .tb_nut #edit-btn, .tb_nut #delete-btn').hide();
+                break;
+            case 3:
+                $('.change, .button-add, .tb_nut').show();
+                $('.change #edit-btn, .change #delete-btn, .tb_nut #edit-btn, .tb_nut #delete-btn').show();
+                break;
+            default:
+                console.log("Trạng thái không rõ");
         }
     }
+
+
+
+
+  
+
 
     $("#dangnhap").on("click", function () {
         console.log("Đã nhấn nút đăng nhập");
