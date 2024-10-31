@@ -52,6 +52,22 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\fonts\fa-brands-400.eot" />
+    <Content Include="assets\fonts\fa-brands-400.ttf" />
+    <Content Include="assets\fonts\fa-brands-400.woff" />
+    <Content Include="assets\fonts\fa-brands-400.woff2" />
+    <Content Include="assets\fonts\fa-regular-400.eot" />
+    <Content Include="assets\fonts\fa-regular-400.ttf" />
+    <Content Include="assets\fonts\fa-regular-400.woff" />
+    <Content Include="assets\fonts\fa-regular-400.woff2" />
+    <Content Include="assets\fonts\fa-solid-900.eot" />
+    <Content Include="assets\fonts\fa-solid-900.ttf" />
+    <Content Include="assets\fonts\fa-solid-900.woff" />
+    <Content Include="assets\fonts\fa-solid-900.woff2" />
+    <Content Include="assets\fonts\Simple-Line-Icons.eot" />
+    <Content Include="assets\fonts\Simple-Line-Icons.ttf" />
+    <Content Include="assets\fonts\Simple-Line-Icons.woff" />
+    <Content Include="assets\fonts\Simple-Line-Icons.woff2" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -62,13 +78,59 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="API.aspx" />
+    <Content Include="assets\bootstrap\css\bootstrap.min.css" />
+    <Content Include="assets\bootstrap\js\bootstrap.min.js" />
+    <Content Include="assets\css\baguetteBox.min.css" />
+    <Content Include="assets\css\untitled.css" />
+    <Content Include="assets\css\vanilla-zoom.min.css" />
+    <Content Include="assets\fonts\fa-brands-400.svg" />
+    <Content Include="assets\fonts\fa-regular-400.svg" />
+    <Content Include="assets\fonts\fa-solid-900.svg" />
+    <Content Include="assets\fonts\fontawesome-all.min.css" />
+    <Content Include="assets\fonts\simple-line-icons.min.css" />
+    <Content Include="assets\fonts\Simple-Line-Icons.svg" />
+    <Content Include="assets\img\avatars\avatar1.jpeg" />
+    <Content Include="assets\img\avatars\avatar1.jpg" />
+    <Content Include="assets\img\avatars\avatar2.jpeg" />
+    <Content Include="assets\img\avatars\avatar2.jpg" />
+    <Content Include="assets\img\avatars\avatar3.jpeg" />
+    <Content Include="assets\img\avatars\avatar3.jpg" />
+    <Content Include="assets\img\avatars\avatar4.jpeg" />
+    <Content Include="assets\img\avatars\avatar5.jpeg" />
+    <Content Include="assets\img\dogs\image2.jpeg" />
+    <Content Include="assets\img\dogs\image3.jpeg" />
+    <Content Include="assets\img\scenery\image1.jpg" />
+    <Content Include="assets\img\scenery\image4.jpg" />
+    <Content Include="assets\img\scenery\image5.jpg" />
+    <Content Include="assets\img\scenery\image6.jpg" />
+    <Content Include="assets\img\star-empty.svg" />
+    <Content Include="assets\img\star-half-empty.svg" />
+    <Content Include="assets\img\star.svg" />
+    <Content Include="assets\img\tech\image1.jpg" />
+    <Content Include="assets\img\tech\image2.jpg" />
+    <Content Include="assets\img\tech\image3.png" />
+    <Content Include="assets\img\tech\image4.jpg" />
+    <Content Include="assets\js\baguetteBox.min.js" />
+    <Content Include="assets\js\bs-init.js" />
+    <Content Include="assets\js\chart.min.js" />
+    <Content Include="assets\js\theme.js" />
+    <Content Include="assets\js\vanilla-zoom.js" />
+    <Content Include="dangky.html" />
+    <Content Include="dangnhap.html" />
+    <Content Include="img\1.jpg" />
+    <Content Include="img\2.jpg" />
+    <Content Include="img\3.jpg" />
     <Content Include="index.html" />
     <Content Include="js.js" />
+    <Content Include="js\crypto-js.js" />
     <Content Include="js\jquery-confirm.min.css" />
     <Content Include="js\jquery-confirm.min.js" />
     <Content Include="js\jquery-ui.js" />
     <Content Include="js\jquery-ui.min.js" />
     <Content Include="js\jquery.min.js" />
+    <Content Include="lich.html" />
+    <Content Include="phong_tb.html" />
+    <Content Include="thongtin.html" />
     <Content Include="type.css" />
     <Content Include="Web.config" />
   </ItemGroup>

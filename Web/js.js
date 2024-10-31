@@ -53,22 +53,22 @@
     }
 
     function status(tttb) {
-        tttb = parseInt(tttb); 
+        tttb = parseInt(tttb);
         switch (tttb) {
             case 1: return "Thiết bị đang dùng";
             case 2: return "Thiết bị không dùng";
             case 3: return "Thiết bị hỏng";
-            default: return "Trạng thái không rõ";  
+            default: return "Trạng thái không rõ";
         }
     }
 
     function statusPhong(ttphong) {
-        ttphong = parseInt(ttphong); 
+        ttphong = parseInt(ttphong);
         switch (ttphong) {
             case 1: return "Phòng đang học";
             case 2: return "Phòng không học";
             case 3: return "Phòng đang sửa chữa";
-            default: return "Trạng thái không rõ";  
+            default: return "Trạng thái không rõ";
         }
     }
 
@@ -161,9 +161,9 @@
         $(".data_phong_tb").append(phongDiv);
     }
 
- 
+
     window.sua_phong = function (maphong, button) {
-        var phongDiv = $(button).closest('.phong'); 
+        var phongDiv = $(button).closest('.phong');
         var currentTenPhong = phongDiv.find('.tt_phong h4').eq(1).text().replace("Tên Phòng Học: ", "").trim();
         var currentTtPhong = phongDiv.find('.tt_phong h4').eq(2).text().replace("Trạng Thái Phòng Học: ", "").trim();
 
@@ -252,8 +252,8 @@
         });
     };
     window.them_tb = function (maphong, button) {
-            var html =
-                `<form id="addDeviceForm">
+        var html =
+            `<form id="addDeviceForm">
                              <div class="mb-3">
                                 <label class="form-label">Mã Phòng: ${maphong}</label>
                                 <label for="matbInput" class="form-label">Mã Thiết Bị</label>
@@ -274,61 +274,61 @@
                         </form>`;
 
         var confirmBox = $.confirm({
-                title: 'Thêm Thiết Bị',
-                content: html,
-                boxWidth: '30%',
-                theme: 'material',
-                buttons: {
-                    add: {
-                        text: 'Thêm',
-                        btnClass: 'btn-primary',
-                        action: function () {
-                            var matb = $('#matbInput').val();
-                            var tentb = $('#tentbInput').val();
-                            var tttbi = $('#tttbiInput').val();
+            title: 'Thêm Thiết Bị',
+            content: html,
+            boxWidth: '30%',
+            theme: 'material',
+            buttons: {
+                add: {
+                    text: 'Thêm',
+                    btnClass: 'btn-primary',
+                    action: function () {
+                        var matb = $('#matbInput').val();
+                        var tentb = $('#tentbInput').val();
+                        var tttbi = $('#tttbiInput').val();
 
-                            if (!matb || !tentb || !tttbi) {
-                                $.alert('Vui lòng nhập đầy đủ thông tin!');
-                                return false;
-                            }
-
-                            $.post('API.aspx', {
-                                action: 'add_tb',
-                                maphong: maphong,
-                                matb: matb,
-                                tentb: tentb,
-                                tttbi: tttbi
-                            }, function (data) {
-                                if (data.ok) {
-                                    $.alert('Đã Thêm Thành Công');
-                                    them_thiet_bi_dom(maphong, matb, tentb, tttbi, button);
-                                    confirmBox.close();
-                                } else {
-                                    $.alert('Thêm Thất Bại');
-                                }
-                            }, 'json');
+                        if (!matb || !tentb || !tttbi) {
+                            $.alert('Vui lòng nhập đầy đủ thông tin!');
                             return false;
                         }
-                    },
-                    cancel: {
-                        text: 'Hủy',
-                        btnClass: 'btn-secondary',
+
+                        $.post('API.aspx', {
+                            action: 'add_tb',
+                            maphong: maphong,
+                            matb: matb,
+                            tentb: tentb,
+                            tttbi: tttbi
+                        }, function (data) {
+                            if (data.ok) {
+                                $.alert('Đã Thêm Thành Công');
+                                them_thiet_bi_dom(maphong, matb, tentb, tttbi, button);
+                                confirmBox.close();
+                            } else {
+                                $.alert('Thêm Thất Bại');
+                            }
+                        }, 'json');
+                        return false;
                     }
+                },
+                cancel: {
+                    text: 'Hủy',
+                    btnClass: 'btn-secondary',
                 }
-            });
-        };
+            }
+        });
+    };
 
-        function them_thiet_bi_dom(maphong, matb, tentb, tttbi, button) {
-            var thietBiDiv = $("<div class='thietbi'></div>");
-            thietBiDiv.append($('<div class="tt_thietbi"></div>').text("Mã Thiết Bị: " + matb + ", Tên: " + tentb + ", Trạng Thái: " + status(tttbi)));
-            thietBiDiv.append($('<div class="tb_nut"></div>').html(
-                `<button class="button_tb" id="edit-btn" onclick="sua_tb('${matb}', this)">Sửa</button>
+    function them_thiet_bi_dom(maphong, matb, tentb, tttbi, button) {
+        var thietBiDiv = $("<div class='thietbi'></div>");
+        thietBiDiv.append($('<div class="tt_thietbi"></div>').text("Mã Thiết Bị: " + matb + ", Tên: " + tentb + ", Trạng Thái: " + status(tttbi)));
+        thietBiDiv.append($('<div class="tb_nut"></div>').html(
+            `<button class="button_tb" id="edit-btn" onclick="sua_tb('${matb}', this)">Sửa</button>
                 <button class="button_tb" id="delete-btn" onclick="xoa_tb('${matb}', this)">Xóa</button>`
-            ));
-            $(button).closest('.thiet_bi_list').append(thietBiDiv);
-        }
+        ));
+        $(button).closest('.thiet_bi_list').append(thietBiDiv);
+    }
 
-  
+
     window.sua_tb = function (matb, button) {
         var container = $(button).closest('.thietbi');
         var currentInfo = container.find('div').eq(0).text();
@@ -382,32 +382,203 @@
         });
     };
 
-        window.xoa_tb = function (matb, button) {
-            $.confirm({
-                title: 'Xóa Thiết Bị',
-                content: 'Bạn có chắc chắn muốn xóa thiết bị này?',
-                boxWidth: '30%',
-                buttons: {
-                    confirm: {
-                        text: 'Xóa',
-                        btnClass: 'btn-danger',
-                        action: function () {
-                            $.post('API.aspx', { action: 'delete_tb', matb: matb }, function (data) {
-                                if (data.ok) {
-                                    $.alert('Đã Xóa Thành Công');
-                                    $(button).closest('.thietbi').remove();
-                                } else {
-                                    $.alert('Xóa thất bại');
-                                }
-                            }, 'json');
-                        }
-                    },
-                    cancel: {
-                        text: 'Hủy',
-                        btnClass: 'btn-secondary',
+    window.xoa_tb = function (matb, button) {
+        $.confirm({
+            title: 'Xóa Thiết Bị',
+            content: 'Bạn có chắc chắn muốn xóa thiết bị này?',
+            boxWidth: '30%',
+            buttons: {
+                confirm: {
+                    text: 'Xóa',
+                    btnClass: 'btn-danger',
+                    action: function () {
+                        $.post('API.aspx', { action: 'delete_tb', matb: matb }, function (data) {
+                            if (data.ok) {
+                                $.alert('Đã Xóa Thành Công');
+                                $(button).closest('.thietbi').remove();
+                            } else {
+                                $.alert('Xóa thất bại');
+                            }
+                        }, 'json');
                     }
+                },
+                cancel: {
+                    text: 'Hủy',
+                    btnClass: 'btn-secondary',
                 }
+            }
+        });
+    };
+    //loadTable();
+
+    function dangky() {
+        const name = $("#nameInput").val().trim();
+        const dienthoai = $("#dienthoaiInput").val().trim();
+        const maso = $("#masoInput").val().trim();
+        const gmail = $("#gmailInput").val().trim();
+        const diachi = $("#diachiInput").val().trim();
+        const username = $("#usernameInput").val().trim();
+        var PassDK = $("#PassInput").val().trim();
+        const RepeatPass = $("#RepeatPassInput").val().trim();
+
+        if (!name || !dienthoai || !maso || !gmail || !diachi || !username || !PassDK || !RepeatPass) {
+            alert("Vui lòng điền đầy đủ thông tin.");
+            return;
+        }
+
+        if (PassDK !== RepeatPass) {
+            alert("Mật khẩu không khớp, vui lòng kiểm tra lại.");
+            return;
+        }
+        var Pass = CryptoJS.SHA256(PassDK).toString();
+        console.log(typeof(Pass));
+        console.log(Pass);
+        $.post('API.aspx', {
+            action: 'dangky',
+            user: username,
+            pass: Pass,
+            name: name,
+            maso: maso,
+            gmail: gmail,
+            dienthoai: dienthoai,
+            diachi: diachi }, function (data) {
+            if (data.ok == 1) {
+                salt_value = data.salt;
+                if (salt_value != '') {
+                    $(location).attr('href', 'index.html');
+                } else {
+                    alert("Tài khoản chưa được đăng ký!");
+                }
+            } else {
+                alert("Đăng nhập thất bại");
+            }
+        }, 'json');
+    }
+
+
+    var loginAttempts = 0;
+
+    function get_salt(callback) {
+        var username = $("#usernameInputDN").val();
+
+        $.post('API.aspx', { action: 'get_salt', uid: username }, function (data) {
+            if (data.ok == 1) {
+                salt_value = data.salt;
+                if (salt_value != '') {
+                    callback(salt_value);
+                } else {
+                    alert("Tài khoản chưa được đăng ký!");
+                }
+            } else {
+                loginAttempts++;
+                if (loginAttempts >= 3) {
+                    $("#captchaSection").show();
+                    $("#captchaImage").attr("src", "api.aspx?action=generate_captcha");
+                }
+                alert("Tài khoản không tồn tại");
+                loginAttempts++;
+            }
+        }, 'json');
+    }
+    function performLogin(salt_value) {
+
+        var username = $("#usernameInputDN").val();
+        var password = $("#PassInputDN").val();
+
+        if (!username || !password) {
+            alert("Vui lòng điền tên đăng nhập và mật khẩu.");
+            return;
+        }
+
+        var hashedPassword = CryptoJS.SHA256(password).toString();
+        //var salt = CryptoJS.SHA256(salt_value).toString();
+
+        $.post('API.aspx', { action: 'login', uid: username, passLogIn: hashedPassword, salt: salt_value }, function (data) {
+            if (data.ok === 1) {
+                loginAttempts = 0;
+                $(location).attr('href', 'index.html');
+                alert("Chào mừng bạn!");
+                checklogin(username)
+            } else {
+                loginAttempts++;
+                if (loginAttempts >= 3) {
+                    $("#captchaSection").show();
+                    $("#captchaImage").attr("src", "api.aspx?action=generate_captcha");
+                }
+                alert("Đăng nhập thất bại: " + data.msg);
+                loginAttempts++;
+            }
+        }, 'json');
+    }
+    function checklogin() {
+
+        $.post('API.aspx', { action: 'check_login'}, function (data) {
+            if (data.ok === 1) {
+                loadTable();
+                control(data.level);
+            } else {
+                alert("Chưa đăng nhập");
+            }
+        }, 'json');
+    }
+
+    function showCaptcha() {
+        $("#captchaSection").show();
+        refreshCaptcha();
+    }
+
+    function validateCaptcha(callback) {
+        var captchaInput = $("#captchaInput").val();
+        $.post('api.aspx', { action: 'validate_captcha', captcha: captchaInput  }, function (data) {
+            if (data.ok) {
+                loginAttempts = 0;
+                callback();
+            } else {
+                alert("CAPTCHA sai, vui lòng nhập lại.");
+                refreshCaptcha();
+            }
+        }, 'json');
+    }
+
+    function login() {
+        if (loginAttempts >= 3) {
+            validateCaptcha(function () {
+                get_salt(function (salt_value) {
+                    performLogin(salt_value);
+                });
             });
-        };
-    loadTable();
+        } else {
+            get_salt(function (salt_value) {
+                performLogin(salt_value);
+            });
+        }
+        
+    }
+
+    $("#dangky").click(function (event) {
+        event.preventDefault(); 
+        dangky();
+    });
+    function refreshCaptcha() {
+        $("#captchaImage").attr("src", "api.aspx?action=generate_captcha&" + new Date().getTime());
+    }
+
+    $("#refreshCaptcha").click(refreshCaptcha);
+
+    function control(level){
+        if (level === 1) {
+            $('.change, .button-add, .tb_nut').hide();
+        } else if (level === 2) {
+            $('.change #add-btn, .button-add').show();
+            $('.change #edit-btn, .change #delete-btn, .tb_nut #edit-btn, .tb_nut #delete-btn').hide();
+        } else if (level === 3) {
+            $('.change, .button-add, .tb_nut').show();
+        }
+    }
+
+    $("#dangnhap").on("click", function () {
+        console.log("Đã nhấn nút đăng nhập");
+
+        login();
+    });
 });
