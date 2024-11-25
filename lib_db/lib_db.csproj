@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="CaptchaGenerator.cs" />
     <Compile Include="DB.cs" />
-    <Compile Include="lich.cs" />
     <Compile Include="baomat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

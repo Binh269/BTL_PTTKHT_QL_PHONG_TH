@@ -408,8 +408,7 @@
                 }
             }
         });
-    };
-    //loadTable();
+    }
 
     function dangky() {
         const name = $("#nameInput").val().trim();
@@ -663,12 +662,6 @@
                 console.log("Trạng thái không rõ");
         }
     }
-
-
-
-
-  
-
 
     $("#dangnhap").on("click", function () {
         console.log("Đã nhấn nút đăng nhập");

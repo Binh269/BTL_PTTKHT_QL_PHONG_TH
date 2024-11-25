@@ -5,7 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using lib_db;
+using System.Linq;
 using Newtonsoft.Json.Linq;
+using static lib_db.DB;
 
 namespace Web
 {
@@ -20,12 +22,10 @@ namespace Web
 
             switch (action)
             {
-                case "dangky":
-                    dangky();
-                    break;
                 case "get_infor":
                     get_status();
                     break;
+
                 case "add_phong":
                     add_phong();
                     break;
@@ -35,6 +35,7 @@ namespace Web
                case "update_phong":
                     update_phong();
                     break;
+
                case "add_tb":
                     add_tb();
                     break;
@@ -43,6 +44,10 @@ namespace Web
                     break;
                case "update_tb":
                     update_tb();
+                    break;
+
+                case "dangky":
+                    dangky();
                     break;
                 case "get_salt":
                     get_salt();
@@ -62,13 +67,110 @@ namespace Web
                 case "check_login":
                     check_login_status();
                     break;
+
+                case "thietbi_hong":
+                    thietbi_hong();
+                    break;
+                case "thietbi_dangdung":
+                    thietbi_dangdung();
+                    break;
+                case "thietbi_khongdung":
+                    thietbi_khongdung();
+                    break;
+
+                case "get_tkb":
+                    get_tkb();
+                    break;
+                case "add_tkb":
+                    add_tkb();
+                    break;
+                case "update_tkb":
+                    update_tkb();
+                    break;
+                case "delete_tkb":
+                    delete_tkb();
+                    break;
+
+                case "thongtin":
+                    thongtin();
+                    break;
+
+                case "import_tkb":
+                    import_tkb();
+                    break;
+
                 default:
                     thong_bao_loi();
                     break;
             }
         }
+        public class ThoiKhoaBieuRaw
+        {
+            public string id { get; set; }
+            public string date { get; set; }
+            public string time { get; set; }
+            public string maphong { get; set; }
+            public string malop { get; set; }
+            public string magv { get; set; }
+        }
 
-       
+        void import_tkb()
+        {
+            try
+            {
+                // Lấy dữ liệu JSON từ request
+                string jsonData = Request.Form["data"];
+                if (string.IsNullOrEmpty(jsonData))
+                {
+                    this.Response.Write("{\"ok\":false,\"msg\":\"Không nhận được dữ liệu!\"}");
+                    return;
+                }
+
+                // Deserialize JSON thành danh sách đối tượng thô
+                var tkbRawList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ThoiKhoaBieuRaw>>(jsonData);
+                if (tkbRawList == null || tkbRawList.Count == 0)
+                {
+                    this.Response.Write("{\"ok\":false,\"msg\":\"Dữ liệu không hợp lệ hoặc trống!\"}");
+                    return;
+                }
+
+                // Chuyển đổi sang danh sách `ThoiKhoaBieu`
+                var tkbList = tkbRawList.Select(raw => new ThoiKhoaBieu
+                {
+                    id = raw.id,
+                    date = raw.date,
+                    time = raw.time,
+                    maphong = raw.maphong,
+                    malop = raw.malop,
+                    magv = raw.magv
+                }).ToList();
+
+                // Kết nối CSDL
+                lib_db.DB db = get_db();
+                foreach (var tkb in tkbList)
+                {
+                    DateTime date = tkb.NgayAsDateTime;
+                    TimeSpan time = tkb.ThoiGianAsTimeSpan;
+
+                    string result = db.add_tkb(tkb.id, date, time, tkb.maphong, tkb.malop, tkb.magv);
+                    if (!result.Contains("\"ok\":1"))
+                    {
+                        this.Response.Write("{\"ok\":false,\"msg\":\"Lỗi khi thêm dữ liệu: " + result + "\"}");
+                        return;
+                    }
+                }
+
+                this.Response.Write("{\"ok\":true,\"msg\":\"Đã lưu thành công dữ liệu!\"}");
+            }
+            catch (Exception ex)
+            {
+                this.Response.Write("{\"ok\":false,\"msg\":\"Có lỗi xảy ra: " + ex.Message + "\"}");
+            }
+        }
+
+
+
+
         void add_tb()
         {
             string matb = this.Request["matb"];
@@ -185,6 +287,12 @@ namespace Web
         {
             lib_db.DB db = get_db();
             string json = db.get_status();
+            this.Response.Write(json);
+        }
+        void thongtin()
+        {
+            lib_db.DB db = get_db();
+            string json = db.thongtin();
             this.Response.Write(json);
         }
         void dangky()
@@ -307,6 +415,73 @@ namespace Web
             }
         }
 
+        void thietbi_hong()
+        {
+            lib_db.DB db = get_db();
+            string json = db.thietbi_hong();
+            this.Response.Write(json);
+        }
+        void thietbi_khongdung()
+        {
+            lib_db.DB db = get_db();
+            string json = db.thietbi_khongdung();
+            this.Response.Write(json);
+        }
+        void thietbi_dangdung()
+        {
+            lib_db.DB db = get_db();
+            string json = db.thietbi_dangdung();
+            this.Response.Write(json);
+        }
+
+        void get_tkb()
+        {
+            lib_db.DB db = get_db();
+            string json = db.get_tkb();
+            this.Response.Write(json);
+        }
+
+        void add_tkb()
+        {
+            string id = this.Request["id"];
+            DateTime date = DateTime.Parse(this.Request["date"]);
+            TimeSpan time = TimeSpan.Parse(this.Request["time"]);
+            string maphong = this.Request["maphong"];
+            string magv = this.Request["magv"];
+            string malop = this.Request["malop"];
+
+            lib_db.DB db = get_db();
+            string json = db.add_tkb(id, date, time, maphong, magv, malop);
+            this.Response.Write(json);
+        }
+
+        void update_tkb()
+        {
+            string id = this.Request["id"];
+            DateTime date = DateTime.Parse(this.Request["date"]);
+            TimeSpan time = TimeSpan.Parse(this.Request["time"]);
+            string maphong = this.Request["maphong"];
+            string magv = this.Request["magv"];
+            string malop = this.Request["malop"];
+
+            lib_db.DB db = get_db();
+            string json = db.update_tkb(id, date, time, maphong, magv, malop);
+            this.Response.Write(json);
+        }
+
+        void delete_tkb()
+        {
+            string id = this.Request["id"];
+            if (string.IsNullOrEmpty(id))
+            {
+                thong_bao_loi();
+                return;
+            }
+
+            lib_db.DB db = get_db();
+            string json = db.delete_tkb(id);
+            this.Response.Write(json);
+        }
 
     }
 }

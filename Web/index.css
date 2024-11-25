@@ -18,7 +18,7 @@
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     flex-basis: 30%;
     box-sizing: border-box;
-    height: 470px; 
+    height: 470px;
     overflow-y: auto;
 }
 
@@ -29,12 +29,12 @@
 
 .button_phong {
     width: 120px;
-    height: 40px; 
+    height: 40px;
     margin: 0px 10px;
     border-radius: 7px;
-    background-color: #ff7043; 
-    color: #ffffff; 
-    border: none; 
+    background-color: #ff7043;
+    color: #ffffff;
+    border: none;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease;
 }
 
@@ -51,21 +51,21 @@
 }
 
 .form-label {
-    color: #1976d2; 
+    color: #1976d2;
     font-weight: bold;
     margin-bottom: 8px;
 }
 
 .form-control {
-    border: 1px solid #bbdefb; 
+    border: 1px solid #bbdefb;
     padding: 8px;
     border-radius: 4px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
     .form-control:focus {
-        border-color: #2196f3; 
-        box-shadow: 0 0 5px rgba(33, 150, 243, 0.5); 
+        border-color: #2196f3;
+        box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
     }
 
 .btn-primary {
@@ -76,8 +76,8 @@
 }
 
     .btn-primary:hover {
-        background-color: #0288d1; 
-        border-color: #0277bd; 
+        background-color: #0288d1;
+        border-color: #0277bd;
     }
 
 .thiet_bi_list {
@@ -87,27 +87,20 @@
     width: 100%;
 }
 
-.thietbi {
 
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    flex-direction: row;
-    align-items: center;
-}
+
     .thietbi:not(:last-child) {
-        border-bottom: 1px solid #000; 
-        margin-bottom: 10px; 
+        border-bottom: 1px solid #000;
+        margin-bottom: 10px;
     }
+
     .thietbi:first-child {
-        border-top: 1px solid #000; 
+        border-top: 1px solid #000;
     }
 
 
 
-.tt_thietbi{
-    width:70%;
-}
+
 
 .tb_nut {
     width: 30%;
@@ -118,7 +111,7 @@
 }
 
 strong {
-    color: #ff8a65; 
+    color: #ff8a65;
     font-size: 16px;
 }
 
@@ -160,8 +153,8 @@ select.form-control {
     -moz-appearance: none;
     padding-right: 30px;
     background-size: 12px;
-    background-color: #ffffff; 
-    border: 1px solid #2196f3; 
+    background-color: #ffffff;
+    border: 1px solid #2196f3;
 }
 
 .change {
@@ -170,12 +163,13 @@ select.form-control {
 }
 
 .jconfirm .jconfirm-box {
-    max-width: 600px; 
+    max-width: 600px;
 }
+
 .button_tb {
     width: 120px;
     height: 40px;
-    margin:5px;
+    margin: 5px;
     border-radius: 7px;
     background-color: #43c4ff;
     color: #ffffff;
@@ -188,3 +182,124 @@ select.form-control {
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         background-color: #2f40eb;
     }
+
+.btn-danger {
+    background-color: red;
+    color: white;
+}
+
+.m-0 {
+    margin: 0 !important;
+    font-size: 20px;
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.rowdoi {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.rowbody {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.shadow {
+    margin: 10px;
+    box-shadow: var(--bs-box-shadow) !important;
+}
+
+.bg-danger {
+    --bs-bg-opacity: 1;
+    --bs-danger-rgb: 54, 185, 204;
+    background-color: rgba(var(--bs-danger-rgb), var(--bs-bg-opacity)) !important;
+}
+
+.border-left-info {
+    border-left: .25rem solid #36b9cc !important;
+}
+
+
+.xemtt {
+    width: 100%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bt {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 20px;
+    width: 60%;
+    margin-left: 20%;
+}
+
+    .bt button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .bt button:hover {
+            background-color: #0056b3;
+        }
+
+        .bt button:focus {
+            outline: none;
+        }
+
+        .bt button.hong {
+            background-color: #dc3545;
+        }
+
+        .bt button.hoatdong {
+            background-color: #28a745;
+        }
+
+        .bt button.ranh {
+            background-color: #ffc107;
+        }
+
+.noidungtt {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.thietbi {
+    background-color: #dde1eb;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tt_thietbi {
+    width: 100%;
+    font-size: 14px;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .noidungtt {
+        flex-direction: column;
+    }
+
+    .thietbi {
+        width: 100%;
+    }
+}
