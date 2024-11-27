@@ -95,8 +95,11 @@ namespace Web
                     thongtin();
                     break;
 
-                case "import_tkb":
-                    import_tkb();
+                case "search":
+                    search();
+                    break;
+                case "timkiem_tkb":
+                    timkiem_tkb();
                     break;
 
                 default:
@@ -104,72 +107,6 @@ namespace Web
                     break;
             }
         }
-        public class ThoiKhoaBieuRaw
-        {
-            public string id { get; set; }
-            public string date { get; set; }
-            public string time { get; set; }
-            public string maphong { get; set; }
-            public string malop { get; set; }
-            public string magv { get; set; }
-        }
-
-        void import_tkb()
-        {
-            try
-            {
-                // Lấy dữ liệu JSON từ request
-                string jsonData = Request.Form["data"];
-                if (string.IsNullOrEmpty(jsonData))
-                {
-                    this.Response.Write("{\"ok\":false,\"msg\":\"Không nhận được dữ liệu!\"}");
-                    return;
-                }
-
-                // Deserialize JSON thành danh sách đối tượng thô
-                var tkbRawList = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ThoiKhoaBieuRaw>>(jsonData);
-                if (tkbRawList == null || tkbRawList.Count == 0)
-                {
-                    this.Response.Write("{\"ok\":false,\"msg\":\"Dữ liệu không hợp lệ hoặc trống!\"}");
-                    return;
-                }
-
-                // Chuyển đổi sang danh sách `ThoiKhoaBieu`
-                var tkbList = tkbRawList.Select(raw => new ThoiKhoaBieu
-                {
-                    id = raw.id,
-                    date = raw.date,
-                    time = raw.time,
-                    maphong = raw.maphong,
-                    malop = raw.malop,
-                    magv = raw.magv
-                }).ToList();
-
-                // Kết nối CSDL
-                lib_db.DB db = get_db();
-                foreach (var tkb in tkbList)
-                {
-                    DateTime date = tkb.NgayAsDateTime;
-                    TimeSpan time = tkb.ThoiGianAsTimeSpan;
-
-                    string result = db.add_tkb(tkb.id, date, time, tkb.maphong, tkb.malop, tkb.magv);
-                    if (!result.Contains("\"ok\":1"))
-                    {
-                        this.Response.Write("{\"ok\":false,\"msg\":\"Lỗi khi thêm dữ liệu: " + result + "\"}");
-                        return;
-                    }
-                }
-
-                this.Response.Write("{\"ok\":true,\"msg\":\"Đã lưu thành công dữ liệu!\"}");
-            }
-            catch (Exception ex)
-            {
-                this.Response.Write("{\"ok\":false,\"msg\":\"Có lỗi xảy ra: " + ex.Message + "\"}");
-            }
-        }
-
-
-
 
         void add_tb()
         {
@@ -274,13 +211,14 @@ namespace Web
             db.cnstr = "Data Source=.;Initial Catalog=QL_TH_BTL;Integrated Security=True;";
             return db;
         }
-        
+
         lib_db.baomat get_db_bm()
         {
             lib_db.baomat db = new lib_db.baomat();
             db.cnstr = "Data Source=.;Initial Catalog=QL_TH_BTL;Integrated Security=True;";
             return db;
         }
+
 
 
         void get_status()
@@ -480,6 +418,20 @@ namespace Web
 
             lib_db.DB db = get_db();
             string json = db.delete_tkb(id);
+            this.Response.Write(json);
+        }
+        void search()
+        {
+            string timkiem = this.Request["timkiem"];
+            lib_db.DB db = get_db();
+            string json = db.search(timkiem);
+            this.Response.Write(json);
+        }
+         void timkiem_tkb()
+        {
+            string timkiem = this.Request["timkiem"];
+            lib_db.DB db = get_db();
+            string json = db.timkiem_tkb(timkiem);
             this.Response.Write(json);
         }
 

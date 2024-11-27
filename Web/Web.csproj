@@ -119,11 +119,11 @@
     <Content Include="assets\img\tech\image2.jpg" />
     <Content Include="assets\img\tech\image3.png" />
     <Content Include="assets\img\tech\image4.jpg" />
-    <Content Include="assets\js\baguetteBox.min.js" />
-    <Content Include="assets\js\bs-init.js" />
-    <Content Include="assets\js\chart.min.js" />
-    <Content Include="assets\js\theme.js" />
-    <Content Include="assets\js\vanilla-zoom.js" />
+    <Content Include="js\js\baguetteBox.min.js" />
+    <Content Include="js\js\bs-init.js" />
+    <Content Include="js\js\chart.min.js" />
+    <Content Include="js\js\theme.js" />
+    <Content Include="js\js\vanilla-zoom.js" />
     <Content Include="dangky.html" />
     <Content Include="dangnhap.html" />
     <Content Include="img\1.jpg" />
@@ -143,6 +143,7 @@
     <Content Include="lich.html" />
     <Content Include="lich.js" />
     <Content Include="phong_tb.html" />
+    <Content Include="phong_tb.js" />
     <Content Include="thongtin.html" />
     <Content Include="type.css" />
     <Content Include="Web.config" />

@@ -312,47 +312,7 @@ namespace lib_db
 
             return json;
         }
-        public class ThoiKhoaBieu
-        {
-            public string id { get; set; }
-            public string date { get; set; }
-            public string time { get; set; }
-            public string maphong { get; set; }
-            public string malop { get; set; }
-            public string magv { get; set; }
-
-            // Thuộc tính chuyển đổi Ngày từ string sang DateTime
-            public DateTime NgayAsDateTime
-            {
-                get
-                {
-                    // Chấp nhận các định dạng ngày khác nhau
-                    if (DateTime.TryParseExact(
-                        date,
-                        new[] { "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy" },
-                        CultureInfo.InvariantCulture,
-                        DateTimeStyles.None,
-                        out DateTime result))
-                    {
-                        return result;
-                    }
-                    throw new FormatException($"Ngày không hợp lệ: {date}");
-                }
-            }
-
-            // Thuộc tính chuyển đổi Thời gian từ string sang TimeSpan
-            public TimeSpan ThoiGianAsTimeSpan
-            {
-                get
-                {
-                    if (TimeSpan.TryParse(time, out TimeSpan result))
-                    {
-                        return result;
-                    }
-                    throw new FormatException($"Thời gian không hợp lệ: {time}");
-                }
-            }
-        }
+      
 
         public string add_tkb(string id, DateTime date, TimeSpan time, string maphong, string magv, string malop)
         {
@@ -461,6 +421,58 @@ namespace lib_db
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "SP_Phong_TB";
                         cmd.Parameters.Add("@action", SqlDbType.VarChar, 50).Value = "thongtin";
+                        object result = cmd.ExecuteScalar();
+                        json = (string)result;
+                    }
+                }
+            }
+            catch
+            {
+                json = "{\"ok\":0,\"msg\":\"Lỗi rồi\"}";
+            }
+
+            return json;
+        }
+        public string search(string timkiem)
+        {
+            string json = "";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(cnstr))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = "SP_Phong_TB";
+                        cmd.Parameters.Add("@action", SqlDbType.VarChar, 50).Value = "search";
+                        cmd.Parameters.Add("@timkiem", SqlDbType.NVarChar, 255).Value = timkiem;
+                        object result = cmd.ExecuteScalar();
+                        json = (string)result;
+                    }
+                }
+            }
+            catch
+            {
+                json = "{\"ok\":0,\"msg\":\"Lỗi rồi\"}";
+            }
+
+            return json;
+        }
+        public string timkiem_tkb(string timkiem)
+        {
+            string json = "";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(cnstr))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandText = "SP_Phong_TB";
+                        cmd.Parameters.Add("@action", SqlDbType.VarChar, 50).Value = "timkiem_tkb";
+                        cmd.Parameters.Add("@timkiem", SqlDbType.NVarChar, 255).Value = timkiem;
                         object result = cmd.ExecuteScalar();
                         json = (string)result;
                     }

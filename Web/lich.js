@@ -47,7 +47,57 @@
             }
         }, 'json');
     }
+    window.loadtimkiemtkb = function () {
+        var timkiem = $("#timkieminput").val().trim();
+        var container = $(".data_tkb");
+        container.empty();
+        container.append('<div>Đang tải dữ liệu thời khóa biểu...</div>');
+        var buttonHtml = `<button class="button_tkb" onclick="them_tkb()">Thêm</button>`;
 
+        $.post('API.aspx', { action: 'timkiem_tkb', timkiem: timkiem }, function (data) {
+            container.empty();
+            container.append(buttonHtml);
+            if (data.length > 0) {
+                var tableHtml = `<div class="table-container">
+                    <table class="table-tkb">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ngày</th>
+                                <th>Thời Gian</th>
+                                <th>Mã Phòng</th>
+                                <th>Mã Lớp</th>
+                                <th>Mã GV</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                data.forEach(function (tkb) {
+                    tableHtml += `
+                    <tr class="tkb-row" data-id="${tkb.id}">
+                        <td>${tkb.id}</td>
+                        <td>${tkb.date}</td>
+                        <td>${tkb.time}</td>
+                        <td>${tkb.maphong}</td>
+                        <td>${tkb.malop}</td>
+                        <td>${tkb.magv}</td>
+                        <td>
+                            <button class="button_tkb" onclick="sua_tkb('${tkb.id}', this)">Sửa</button>
+                            <button class="button_tkb" onclick="xoa_tkb('${tkb.id}', this)">Xóa</button>
+                        </td>
+                    </tr>`;
+                });
+                tableHtml += `</tbody></table></div>`;
+                container.append(tableHtml);
+            } else {
+                container.append('<div>Không có dữ liệu thời khóa biểu.</div>');
+            }
+        }, 'json');
+    }
+
+    $("#timkiemtkb").on("click", function () {
+        loadtimkiemtkb();
+    });
     window.them_tkb = function () {
         var html = `
         <form id="addTKBForm">
